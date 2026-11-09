@@ -1,0 +1,54 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { PERSONAL_INFO } from '../consts';
+
+const { role, name, avatar, contact, contactLabel, about } = PERSONAL_INFO;
+
+const title = `${name} - About`;
+---
+
+<Layout title={title}>
+  <div class="flex flex-col items-center align-middle">
+    <div class="my-8 sm:my-12">
+      <h1 class="font-display mb-4 text-center text-display text-ink md:mb-6">
+        {name}
+      </h1>
+    </div>
+
+    <div class="mx-4 w-fit rounded-xl bg-paper-2 py-4 sm:py-8">
+      <div class="max-w-screen-lg px-4 md:px-8">
+        <div class="grid items-center gap-8 sm:grid-cols-2">
+          <div
+            class="flex flex-col items-center justify-center py-8 sm:items-start sm:py-24"
+          >
+            <p class="mb-4 text-sm font-medium text-accent md:text-base">
+              {role}
+            </p>
+
+            <p class="mb-8 text-center text-muted sm:text-left md:text-lg">
+              {about}
+            </p>
+
+            <a
+              href={contact}
+              class="inline-block rounded-lg border border-accent bg-ink px-8 py-3 text-center text-sm font-semibold text-paper outline-none transition duration-100 hover:bg-accent hover:text-on-accent focus-visible:ring focus-visible:ring-focus md:text-base"
+              >{contactLabel}</a
+            >
+          </div>
+
+          <div
+            class="relative mx-auto h-fit max-w-xs overflow-hidden rounded-full bg-paper-2 object-cover object-center shadow-lg sm:max-w-md"
+          >
+            <img
+              src={avatar}
+              alt={`Portrait of ${name}`}
+              height="600"
+              width="600"
+              class="h-full w-full object-cover object-center"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>

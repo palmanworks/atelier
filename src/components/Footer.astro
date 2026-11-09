@@ -1,0 +1,46 @@
+---
+import { ROUTES, SOCIAL, PERSONAL_INFO } from '../consts';
+import { Icon } from 'astro-icon/components';
+
+const year = new Date().getFullYear();
+---
+
+<footer transition:persist="site-footer">
+  <div class="mb-4 mt-12 flex flex-col items-center gap-4">
+    <div class="flex gap-4">
+      {
+        SOCIAL.map((social) => (
+          <a
+            href={social.href}
+            target="_blank"
+            rel="me noopener noreferrer"
+          >
+            <Icon
+              name={social.icon}
+              aria-label={social.label}
+              class="h-5 w-5"
+              fill="currentColor"
+              width="24"
+              height="24"
+            />
+          </a>
+        ))
+      }
+    </div>
+
+    <nav class="flex flex-wrap justify-center gap-x-4 gap-y-2 md:gap-6">
+      {ROUTES.map((route) => <a href={route.href}>{route.label}</a>)}
+    </nav>
+
+    <div class="text-center text-sm text-muted">
+      © {year} {PERSONAL_INFO.name}
+    </div>
+  </div>
+</footer>
+
+<style>
+  @reference "../styles/global.css";
+  a {
+    @apply text-muted transition-colors hover:text-accent active:text-accent;
+  }
+</style>

@@ -1,0 +1,35 @@
+{
+  "name": "astro-art-portfolio",
+  "type": "module",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "prebuild": "astro check",
+    "build": "astro build",
+    "build:light": "FORCE_THEME=light yarn build",
+    "build:dark": "FORCE_THEME=dark yarn build",
+    "preview": "astro preview"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.12",
+    "@netlify/plugin-lighthouse": "^6.0.4",
+    "@notionhq/client": "^2.3.0",
+    "@tailwindcss/vite": "^4.3.3",
+    "@types/probe-image-size": "^7.2.5",
+    "astro-icon": "^1.2.0",
+    "photoswipe": "^5.4.4",
+    "prettier": "^3.9.10",
+    "prettier-plugin-astro": "^0.14.1",
+    "prettier-plugin-tailwindcss": "^0.8.1",
+    "probe-image-size": "^7.5.0",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^5.9.3",
+    "vite": "^8.3.3"
+  },
+  "dependencies": {
+    "@iconify-json/mdi": "^1.2.3",
+    "astro": "^7.4.4"
+  }
+}

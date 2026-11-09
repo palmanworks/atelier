@@ -1,0 +1,24 @@
+name: Pr Checker
+
+on: [pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: ".nvmrc"
+
+      - run: yarn install --frozen-lockfile
+
+      - run: yarn astro check
+
+      - run: NODE_OPTIONS="--max-old-space-size=4096" yarn build
+        env:
+          NOTION_API_KEY: ${{secrets.NOTION_API_KEY}}
+          DATABASE_ID: ${{secrets.DATABASE_ID}}
+
