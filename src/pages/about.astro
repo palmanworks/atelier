@@ -1,0 +1,54 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="About — Atelier">
+  <main class="max-w-3xl mx-auto px-6 py-24">
+    <!-- ヘッダータイトル -->
+    <header class="mb-16 border-b border-zinc-800/60 pb-8">
+      <h1 class="text-3xl font-light tracking-widest mb-3">About</h1>
+      <p class="text-xs text-zinc-400 font-light tracking-wider">
+        アトリエと、編物についての記録
+      </p>
+    </header>
+
+    <!-- メインコンテンツ -->
+    <div class="space-y-16 text-zinc-300 font-light leading-relaxed text-sm">
+      <!-- 導入 -->
+      <section class="space-y-4">
+        <p class="text-base text-zinc-100 leading-relaxed font-normal">
+          糸が交差することで生まれる構造と、手仕事ならではの表情。
+        </p>
+        <p>
+          かつて専門学校で編物全般を研究していました。組織の仕組み、糸の挙動、そして立体としての造形。日々の制作や試行錯誤の中で見えてきた手仕事のロジックを、静かな空間に書き留めています。
+        </p>
+      </section>
+
+      <!-- バックグラウンド・思想 -->
+      <section class="space-y-4 pt-8 border-t border-zinc-900">
+        <h2 class="text-lg font-normal tracking-wide text-zinc-100">Atelier について</h2>
+        <p>
+          ここは、完成した作品を並べるギャラリーであり、試行錯誤のプロセスを記すワークスペースであり、構造的な考察を深める技術の記録庫です。
+        </p>
+        <p>
+          流行のスタイルにとらわれず、素材と構造が持つ本質的な美しさを紐解きながら、一針一針の積み重ねを大切にしています。ふらっと立ち寄った方が、編みの世界に流れるロジックや深みにそっと触れていけるような場所を目指しています。
+        </p>
+      </section>
+
+      <!-- プロフィール概要 -->
+      <section class="space-y-4 pt-8 border-t border-zinc-900">
+        <h2 class="text-lg font-normal tracking-wide text-zinc-100">Profile</h2>
+        <ul class="space-y-2 text-xs text-zinc-400">
+          <li class="flex flex-col sm:flex-row gap-2 sm:gap-6">
+            <span class="w-24 text-zinc-500">背景</span>
+            <span class="text-zinc-300">専門学校にて編物全般を専門的に研究</span>
+          </li>
+          <li class="flex flex-col sm:flex-row gap-2 sm:gap-6">
+            <span class="w-24 text-zinc-500">関心領域</span>
+            <span class="text-zinc-300">編地組織、立体構造設計、手仕事のプロセス記録</span>
+          </li>
+        </ul>
+      </section>
+    </div>
+  </main>
+</BaseLayout>

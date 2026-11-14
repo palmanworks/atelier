@@ -1,41 +1,62 @@
 ---
-import BaseHead from "../components/BaseHead.astro";
-import Header from "../components/Header.astro";
-import Footer from "../components/Footer.astro";
-import SideBar from "../components/SideBar.astro";
-import { ViewTransitions } from "astro:transitions";
+interface Props {
+  title?: string;
+}
 
-import { SITE_TITLE, SITE_DESCRIPTION, TRANSITION_API } from "../config";
-
-const {
-  image,
-  title = SITE_TITLE,
-  description = SITE_DESCRIPTION,
-  includeSidebar = true,
-  sideBarActiveItemID,
-  ogType,
-} = Astro.props;
+const { title = "YarnDiary — 編物研究・制作記録" } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en" data-theme="lofi">
+<html lang="ja" class="scroll-smooth">
   <head>
-    <BaseHead title={title} description={description} image={image} , ogType={ogType} />
-    {TRANSITION_API && <ViewTransitions />}
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
   </head>
-  <body>
-    <div class="bg-base-100 drawer lg:drawer-open">
-      <input id="my-drawer" type="checkbox" class="drawer-toggle" />
-      <div class="drawer-content bg-base-100">
-        <Header title={SITE_TITLE} />
-        <div class="md:flex md:justify-center">
-          <main class="p-6 pt-10 lg:max-w-[900px] max-w-[100vw]">
-            <slot />
-          </main>
-        </div>
-        <Footer />
+  <body class="bg-zinc-950 text-zinc-100 min-h-screen flex flex-col font-sans selection:bg-rose-500/30 selection:text-white">
+
+    <!-- 上部固定ヘッダー -->
+    <header class="sticky top-0 z-50 backdrop-blur-md bg-zinc-950/80 border-b border-zinc-800/60">
+      <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+        <a href="/" class="text-lg font-light tracking-widest hover:text-rose-300 transition-colors">
+          YarnDiary
+        </a>
+        <nav class="flex items-center gap-6 text-sm font-medium text-zinc-400">
+          <a href="/#gallery" class="hover:text-zinc-100 transition-colors">Gallery</a>
+          <a href="/#works" class="hover:text-zinc-100 transition-colors">Works</a>
+          <a href="/#articles" class="hover:text-zinc-100 transition-colors">Articles</a>
+          <a href="/about" class="hover:text-zinc-100 transition-colors">About</a>
+        </nav>
       </div>
-      {includeSidebar && <SideBar sideBarActiveItemID={sideBarActiveItemID} />}
-    </div>
+    </header>
+
+    <!-- メインコンテンツ -->
+    <main class="flex-grow">
+      <slot />
+    </main>
+
+    <!-- フッター -->
+    <footer class="border-t border-zinc-800/60 bg-zinc-950 py-16 px-6 mt-20">
+      <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-end gap-8">
+        <div>
+          <p class="font-light text-lg tracking-wider mb-2">Atelier</p>
+          <p class="text-xs text-zinc-400 max-w-md leading-relaxed">
+            編物研究・制作記録。かつて専門学校で編物全般を研究していました。糸の構造と手仕事の重なりを記しています。
+          </p>
+        </div>
+
+        <div class="flex flex-col items-start md:items-end gap-4">
+          <div class="flex items-center gap-6 text-xs text-zinc-400">
+            <a href="/about" class="hover:text-zinc-100 transition-colors">About</a>
+            <a href="/policy" class="hover:text-zinc-100 transition-colors">Site Policy</a>
+            <!-- 必要であればSNSやContactリンクをここに追加 -->
+          </div>
+          <p class="text-[11px] text-zinc-600 tracking-wider">
+            &copy; {new Date().getFullYear()} Atelier. All rights reserved.
+          </p>
+        </div>
+      </div>
+    </footer>
+
   </body>
 </html>

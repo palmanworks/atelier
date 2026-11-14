@@ -1,0 +1,66 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection, render } from "astro:content";
+
+// 1. ビルド時に生成するURL（slug）のリストを返す
+export async function getStaticPaths() {
+  const articles = await getCollection("articles");
+  return articles.map((article) => {
+    // 拡張子（.md や .mdx）を取り除いてクリーンなslugにする
+    const slug = article.id.replace(/\.[^/.]+$/, '');
+    return {
+      params: { slug },
+      props: { article },
+    };
+  });
+}
+
+// 2. propsから現在の記事データを受け取る
+const { article } = Astro.props;
+const { Content } = await render(article);
+
+// 日付のフォーマット関数
+const formatDate = (date: Date) => {
+  return new Date(date).toISOString().split('T')[0].replace(/-/g, '.');
+};
+---
+
+<BaseLayout title={`${article.data.title} — Atelier`}>
+  <article class="max-w-3xl mx-auto px-6 py-24">
+
+    {/* 記事ヘッダー */}
+    <header class="mb-12 border-b border-zinc-800/60 pb-8">
+      {article.data.tag && (
+        <span class="text-[11px] text-rose-300/80 font-mono tracking-wider mb-3 inline-block">
+          # {article.data.tag}
+        </span>
+      )}
+      <h1 class="text-2xl md:text-4xl font-light tracking-wide leading-snug mb-4">
+        {article.data.title}
+      </h1>
+      <time class="text-xs text-zinc-500 font-mono">
+        {formatDate(article.data.pubDate)}
+      </time>
+    </header>
+
+    {/* アイキャッチ画像（ある場合のみ表示） */}
+    {article.data.image && (
+      <div class="rounded-lg overflow-hidden mb-12 bg-zinc-900 aspect-video border border-zinc-800">
+        <img src={article.data.image} alt={article.data.title} class="w-full h-full object-cover" />
+      </div>
+    )}
+
+    {/* 本文エリア（Tailwindのtypography等でスタイリング） */}
+    <div class="prose prose-invert prose-zinc max-w-none text-sm md:text-base leading-loose font-light space-y-6 text-zinc-300">
+      <Content />
+    </div>
+
+    {/* 記事下部のナビゲーション */}
+    <div class="mt-20 pt-8 border-t border-zinc-800/60 flex justify-between items-center text-xs">
+      <a href="/" class="text-zinc-400 hover:text-white transition-colors">
+        ← Atelier トップへ戻る
+      </a>
+    </div>
+
+  </article>
+</BaseLayout>

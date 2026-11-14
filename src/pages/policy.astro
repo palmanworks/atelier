@@ -1,0 +1,44 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Site Policy — Atelier">
+  <main class="max-w-3xl mx-auto px-6 py-24">
+    <!-- ヘッダータイトル -->
+    <header class="mb-16 border-b border-zinc-800/60 pb-8">
+      <h1 class="text-3xl font-light tracking-widest mb-3">Site Policy</h1>
+      <p class="text-xs text-zinc-400 font-light tracking-wider">
+        当サイトの利用規約・免責事項・プライバシーポリシー
+      </p>
+    </header>
+
+    <!-- メインコンテンツ -->
+    <div class="space-y-12 text-zinc-300 font-light leading-relaxed text-sm">
+      
+      <!-- 著作権・転載について -->
+      <section class="space-y-3">
+        <h2 class="text-base font-normal tracking-wide text-zinc-100">著作権・転載について</h2>
+        <p class="text-xs text-zinc-400 leading-relaxed">
+          当サイト（Atelier）に掲載されているすべての画像・文章・図解等の著作権は運営者に帰属します。事前の許可なく、無断での転載、複製、再配布、商用利用等を行うことはご遠慮ください。
+        </p>
+      </section>
+
+      <!-- 免責事項 -->
+      <section class="space-y-3 pt-6 border-t border-zinc-900">
+        <h2 class="text-base font-normal tracking-wide text-zinc-100">免責事項</h2>
+        <p class="text-xs text-zinc-400 leading-relaxed">
+          当サイトに掲載している技術的考察やプロセス記録は、個人の研究・制作に基づくものです。内容の正確性や安全性については万全を期しておりますが、その内容から生じるいかなる損失・損害についても責任を負いかねますのでご了承ください。
+        </p>
+      </section>
+
+      <!-- プライバシーポリシー・アクセス解析 -->
+      <section class="space-y-3 pt-6 border-t border-zinc-900">
+        <h2 class="text-base font-normal tracking-wide text-zinc-100">プライバシーポリシー</h2>
+        <p class="text-xs text-zinc-400 leading-relaxed">
+          当サイトでは、訪問状況の把握やサイト改善のためにアクセス解析ツールを使用する場合があります。この過程で収集されるデータは匿名で処理され、個人を特定する情報は含まれません。
+        </p>
+      </section>
+
+    </div>
+  </main>
+</BaseLayout>

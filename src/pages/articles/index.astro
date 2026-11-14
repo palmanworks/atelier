@@ -1,0 +1,82 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+
+// 1. 全ての技術記事を取得し、新しい順に並べ替える
+const articles = (await getCollection("articles")).sort(
+  (a, b) => new Date(b.data.pubDate).valueOf() - new Date(a.data.pubDate).valueOf()
+);
+
+// 日付のフォーマット関数
+const formatDate = (dateInput: Date | string) => {
+  const date = new Date(dateInput);
+  return !isNaN(date.getTime()) ? date.toISOString().split('T')[0].replace(/-/g, '.') : '';
+};
+---
+
+<BaseLayout title="Articles — Atelier">
+  <main class="max-w-4xl mx-auto px-6 py-24">
+
+    {/* ページヘッダー */}
+    <header class="mb-16 border-b border-zinc-800/60 pb-8">
+      <h1 class="text-3xl font-light tracking-widest mb-3">Technical Articles</h1>
+      <p class="text-xs text-zinc-400 font-light tracking-wider">
+        構造や編物理論に関する考察の記録
+      </p>
+    </header>
+
+    {/* 記事一覧リスト */}
+    <div class="space-y-6">
+      {articles.map((article) => {
+        // 拡張子を取り除いたクリーンなslugを生成
+        const slug = article.id.replace(/\.[^/.]+$/, '');
+
+        return (
+          <a
+            href={`/articles/${slug}`}
+            class="group flex flex-col sm:flex-row gap-6 bg-zinc-950/60 border border-zinc-800/80 rounded-md p-6 hover:border-zinc-700 transition-colors"
+          >
+            {/* アイキャッチ画像 */}
+            {article.data.image && (
+              <div class="w-full sm:w-48 h-32 bg-zinc-900 rounded shrink-0 overflow-hidden border border-zinc-800/60">
+                <img
+                  src={article.data.image}
+                  alt={article.data.title}
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+              </div>
+            )}
+
+            {/* 記事情報 */}
+            <div class="flex flex-col justify-between flex-grow">
+              <div>
+                {article.data.tag && (
+                  <span class="text-[10px] text-rose-300/80 font-mono mb-2 inline-block">
+                    # {article.data.tag}
+                  </span>
+                )}
+                <h2 class="text-base font-medium group-hover:text-rose-200 transition-colors mb-2 leading-snug">
+                  {article.data.title}
+                </h2>
+                <p class="text-xs text-zinc-400 line-clamp-2 leading-relaxed font-light">
+                  {article.data.description}
+                </p>
+              </div>
+              <time class="text-[10px] text-zinc-500 mt-4 font-mono">
+                {formatDate(article.data.pubDate)}
+              </time>
+            </div>
+          </a>
+        );
+      })}
+    </div>
+
+    {/* トップへ戻るナビゲーション */}
+    <div class="mt-16 pt-8 border-t border-zinc-800/60">
+      <a href="/" class="text-xs text-zinc-400 hover:text-white transition-colors">
+        ← Atelier トップへ戻る
+      </a>
+    </div>
+
+  </main>
+</BaseLayout>

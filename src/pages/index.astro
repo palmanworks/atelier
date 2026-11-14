@@ -1,78 +1,228 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import HorizontalCard from "../components/HorizontalCard.astro";
-import { getCollection } from "astro:content";
-import createSlug from "../lib/createSlug"
+import { getCollection, render } from "astro:content";
 
-const posts = (await getCollection("blog")).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+// コレクションからデータを取得し、日付順やorder順に並び替え
+const galleryItems = (await getCollection("gallery")).sort(
+  (a, b) => (a.data.order || 0) - (b.data.order || 0)
+);
 
-const last_posts = posts.slice(0, 3);
+// ワークデータを取得
+const workItems = (await getCollection("works")).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+
+// 各ワークのMarkdown本文（Content）を事前にレンダリングしておく
+const renderedWorks = await Promise.all(
+  workItems.map(async (work) => {
+    const { Content } = await render(work);
+    return { ...work, Content };
+  })
+);
+
+// 1. 記事コレクションを取得し、新しい順に並べ替える
+const articles = (await getCollection("articles")).sort(
+  (a, b) => b.data.pubDate.valueOf() - b.data.pubDate.valueOf()
+).slice(0, 2);
+
+// 【修正】文字列・Dateオブジェクトのどちらが来ても安全に変換するヘルパー
+const formatDate = (dateInput: Date | string) => {
+  const date = new Date(dateInput);
+  return !isNaN(date.getTime()) ? date.toISOString().split('T')[0].replace(/-/g, '.') : '';
+};
 ---
 
-<BaseLayout sideBarActiveItemID="home">
-  <div class="pb-12 mt-5">
-    <div class="text-xl py-1">Hey there 👋</div>
-    <div class="text-5xl font-bold">I'm Manuel Ernesto</div>
-    <div class="text-3xl py-3 font-bold">Software Engineer and Entrepreneur</div>
-    <div class="py-2">
-      <text class="text-lg">
-        This is <b>Astrofy</b> a free and open-source template for your Personal Portfolio Website built with Astro and TailwindCSS.
-        Create in minutes a website with Blog, CV, Project Section, Store and RSS Feed. I hope you find
-        it useful!
-      </text>
+<BaseLayout>
+  <!-- 1. 一面の大きな写真 ＋ スクロールボタン -->
+  <section class="relative h-screen w-full flex items-center justify-center overflow-hidden">
+    <!-- 背景写真（public/hero.jpg を配置してください） -->
+    <div class="absolute inset-0 z-0">
+      <img
+        src="/hero.jpg"
+        alt="メインビジュアル"
+        class="w-full h-full object-cover brightness-75 scale-105"
+      />
+      <!-- 写真の下部を自然に暗くするグラデーション -->
+      <div class="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-zinc-950"></div>
     </div>
-    <div class="mt-8">
-      <a class="btn" href="https://twitter.com/manuelernestog" target="_blank"> Let's connect!</a>
-      <a href="https://github.com/manuelernestog/astrofy" target="_blank" class="btn btn-outline ml-5">
-        Get This template
+
+    <!-- キャッチコピー -->
+    <div class="relative z-10 text-center px-4 max-w-2xl">
+      <h1 class="text-4xl md:text-6xl font-extralight tracking-widest mb-4">YarnDiary</h1>
+      <p class="text-xs md:text-sm text-zinc-300 font-light tracking-widest">
+        糸の表情と、構造の記録。
+      </p>
+    </div>
+
+    <!-- 下へのスクロール案内 -->
+    <div class="absolute bottom-10 z-10 animate-bounce">
+      <a href="#gallery" class="text-zinc-400 hover:text-white transition-colors flex flex-col items-center text-[10px] tracking-widest">
+        <span>SCROLL</span>
+        <svg class="w-3 h-3 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+        </svg>
       </a>
     </div>
-  </div>
+  </section>
 
-  <div>
-    <div class="text-3xl w-full font-bold mb-2">My last projects {"</>"}</div>
-  </div>
+  <!-- 2. 作品ギャラリー（横4 × 縦3）（自動でループ表示） -->
+  <section id="gallery" class="max-w-6xl mx-auto px-6 py-28 scroll-mt-20">
+    <div class="mb-12">
+      <h2 class="text-xl font-light tracking-wide mb-1">Gallery</h2>
+      <p class="text-xs text-zinc-400">完成した作品の視覚的記録</p>
+    </div>
 
-  <HorizontalCard
-    title="Demo Project 1"
-    img="/post_img.webp"
-    desc="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-    url="#"
-    badge="NEW"
-  />
-  <div class="divider my-0"></div>
-  <HorizontalCard
-    title="Demo Project 2"
-    img="/post_img.webp"
-    desc="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-    url="#"
-  />
-  <div class="divider my-0"></div>
-  <HorizontalCard
-    title="Demo Project 3"
-    img="/post_img.webp"
-    desc="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-    url="#"
-    badge="FOSS"
-  />
+    <!-- PCで4列、スマホで2列のグリッド -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      {galleryItems.map((item) => (
+        <div class="group relative aspect-square overflow-hidden rounded-md bg-zinc-900 border border-zinc-800/80">
+          <img
+            src={item.data.image}
+            alt={item.data.title}
+            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          />
+          <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+            <span class="text-xs text-zinc-100 font-light">{item.data.title}</span>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
 
-  <div>
-    <div class="text-3xl w-full font-bold mb-5 mt-10">Latest from blog</div>
-  </div>
+  <!-- 3. ワーク（途中経過）セクション -->
+  <section id="works" class="max-w-6xl mx-auto px-6 py-28 border-t border-zinc-800/40 scroll-mt-20">
+    <div class="mb-12">
+      <h2 class="text-xl font-light tracking-wide mb-1">Works & Process</h2>
+      <p class="text-xs text-zinc-400">試作・途中経過（カードをクリックして詳細を表示）</p>
+    </div>
 
-  {
-    last_posts.map((post) => (
-      <>
-        <HorizontalCard
-          title={post.data.title}
-          img={post.data.heroImage}
-          desc={post.data.description}
-          url={"/blog/" + createSlug(post.data.title, post.slug)}
-          target="_self"
-          badge={post.data.badge}
-        />
-        <div class="divider my-0" />
-      </>
-    ))
-  }
+    <!-- カード一覧グリッド -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {renderedWorks.map((work, index) => (
+        <>
+          {/* カード本体（クリックで対応するモーダルを開く） */}
+          <div 
+            onclick={`document.getElementById('modal-${index}').showModal()`}
+            class="group cursor-pointer rounded-md overflow-hidden bg-zinc-900/60 border border-zinc-800/80 p-4 hover:border-zinc-700 transition-colors"
+          >
+            <div class="aspect-[4/3] rounded-sm mb-4 overflow-hidden bg-zinc-800">
+              <img src={work.data.image} alt={work.data.title} class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+            </div>
+            <h3 class="text-sm font-medium mb-1.5 group-hover:text-rose-300 transition-colors">{work.data.title}</h3>
+            {work.data.yarn && <p class="text-[11px] text-zinc-500 mb-2">使用糸: {work.data.yarn}</p>}
+            <p class="text-xs text-zinc-400 line-clamp-2 leading-relaxed">{work.body}</p>
+          </div>
+
+          {/* 各カード専用のモーダル（ダイアログ） */}
+          <dialog id={`modal-${index}`} class="backdrop:bg-black/80 bg-zinc-900 text-zinc-100 rounded-lg p-0 max-w-2xl w-[90%] border border-zinc-800 shadow-2xl overflow-hidden open:animate-fadeIn">
+            <div class="p-6 md:p-8 max-h-[85vh] overflow-y-auto">
+              
+              {/* モーダルヘッダー */}
+              <div class="flex justify-between items-start mb-6">
+                <div>
+                  <span class="text-[10px] text-rose-300/80 font-mono tracking-wider">PROCESS RECORD</span>
+                  <h3 class="text-lg font-light tracking-wide mt-1">{work.data.title}</h3>
+                </div>
+                <button 
+                  onclick={`document.getElementById('modal-${index}').close()`}
+                  class="text-zinc-400 hover:text-white p-2 text-sm transition-colors"
+                  aria-label="閉じる"
+                >
+                  ✕
+                </button>
+              </div>
+
+              {/* 写真 */}
+              <div class="rounded-md overflow-hidden mb-6 bg-zinc-950 aspect-video">
+                <img src={work.data.image} alt={work.data.title} class="w-full h-full object-cover" />
+              </div>
+
+              {/* メタ情報（糸やゲージ） */}
+              {(work.data.yarn || work.data.gauge) && (
+                <div class="bg-zinc-950/60 border border-zinc-800/60 rounded p-4 mb-6 text-xs space-y-1.5 text-zinc-300 font-mono">
+                  {work.data.yarn && <p><span class="text-zinc-500">使用糸:</span> {work.data.yarn}</p>}
+                  {work.data.gauge && <p><span class="text-zinc-500">ゲージ:</span> {work.data.gauge}</p>}
+                </div>
+              )}
+
+              {/* 本文（Markdownの内容） */}
+              <div class="prose prose-invert prose-zinc max-w-none text-xs md:text-sm leading-relaxed space-y-4 font-light">
+                <work.Content />
+              </div>
+
+              {/* 閉じるボタン（フッター） */}
+              <div class="mt-8 pt-6 border-t border-zinc-800/80 flex justify-end">
+                <button 
+                  onclick={`document.getElementById('modal-${index}').close()`}
+                  class="px-5 py-2 text-xs bg-zinc-800 hover:bg-zinc-700 text-zinc-200 rounded transition-colors"
+                >
+                  閉じる
+                </button>
+              </div>
+
+            </div>
+          </dialog>
+        </>
+      ))}
+    </div>
+  </section> 
+
+  <!-- 4. 技術ブログ記事（深い技術的記述への入口） -->
+  <section id="articles" class="max-w-6xl mx-auto px-6 py-28 border-t border-zinc-800/40 scroll-mt-20">
+    <div class="flex justify-between items-end mb-12">
+      <div>
+        <h2 class="text-xl font-light tracking-wide mb-1">Technical Articles</h2>
+        <p class="text-xs text-zinc-400">構造や編物理論に関する考察</p>
+      </div>
+      <!-- もし一覧ページを作る場合は /articles へのリンクを置けます -->
+      <a href="/articles" class="text-xs text-zinc-400 hover:text-white transition-colors">All Articles ➔</a>
+    </div>
+
+   <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {articles.map((article) => {
+        // 拡張子を取り除いたクリーンなslugを生成
+        const slug = article.id.replace(/\.[^/.]+$/, '');
+        
+        return (
+          <a 
+            href={`/articles/${slug}`} 
+            class="group flex flex-col sm:flex-row gap-5 bg-zinc-950 border border-zinc-800/80 rounded-md p-5 hover:border-zinc-700 transition-colors"
+          >
+            {article.data.image ? (
+              <div class="w-full sm:w-36 h-28 bg-zinc-900 rounded shrink-0 overflow-hidden border border-zinc-800/60">
+                <img 
+                  src={article.data.image} 
+                  alt={article.data.title} 
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                />
+              </div>
+            ) : (
+              <div class="w-full sm:w-36 h-28 bg-zinc-900 rounded shrink-0 flex items-center justify-center text-zinc-600 text-xs font-mono">
+                Atelier
+              </div>
+            )}
+
+            <div class="flex flex-col justify-between flex-grow">
+              <div>
+                {article.data.tag && (
+                  <span class="text-[10px] text-rose-300/80 font-mono mb-1.5 inline-block">
+                    # {article.data.tag}
+                  </span>
+                )}
+                <h3 class="text-sm font-medium group-hover:text-rose-200 transition-colors mb-1.5 leading-snug">
+                  {article.data.title}
+                </h3>
+                <p class="text-xs text-zinc-400 line-clamp-2 leading-relaxed font-light">
+                  {article.data.description}
+                </p>
+              </div>
+              <span class="text-[10px] text-zinc-500 mt-3 font-mono">
+                {formatDate(article.data.pubDate)}
+              </span>
+            </div>
+          </a>
+        );
+      })}
+    </div> 
+  </section> 
 </BaseLayout>
