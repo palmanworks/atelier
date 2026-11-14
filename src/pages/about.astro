@@ -3,52 +3,83 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 ---
 
 <BaseLayout title="About — Atelier">
-  <main class="max-w-3xl mx-auto px-6 py-24">
-    <!-- ヘッダータイトル -->
-    <header class="mb-16 border-b border-zinc-800/60 pb-8">
-      <h1 class="text-3xl font-light tracking-widest mb-3">About</h1>
-      <p class="text-xs text-zinc-400 font-light tracking-wider">
-        アトリエと、編物についての記録
+  <main class="max-w-3xl mx-auto px-6 py-28">
+    
+    {/* ページヘッダー */}
+    <header class="mb-20 border-b border-zinc-800/60 pb-10">
+      <span class="text-[11px] text-rose-300/80 font-mono tracking-widest mb-3 inline-block">
+        CONCEPT & ARCHIVE
+      </span>
+      <h1 class="text-3xl md:text-4xl font-light tracking-widest mb-4">
+        About Atelier
+      </h1>
+      <p class="text-xs md:text-sm text-zinc-400 font-light tracking-wider">
+        糸の表情と、構造の記録。
       </p>
     </header>
 
-    <!-- メインコンテンツ -->
-    <div class="space-y-16 text-zinc-300 font-light leading-relaxed text-sm">
-      <!-- 導入 -->
-      <section class="space-y-4">
-        <p class="text-base text-zinc-100 leading-relaxed font-normal">
-          糸が交差することで生まれる構造と、手仕事ならではの表情。
-        </p>
-        <p>
-          かつて専門学校で編物全般を研究していました。組織の仕組み、糸の挙動、そして立体としての造形。日々の制作や試行錯誤の中で見えてきた手仕事のロジックを、静かな空間に書き留めています。
-        </p>
-      </section>
+    {/* 1. ステートメント（この場所の目的） */}
+    <section class="mb-20 space-y-6 text-sm md:text-base text-zinc-300 font-light leading-loose">
+      <p>
+        一本の糸がループを描き、隣り合う目と絡み合うことで生まれる立体と張力。
+        <strong class="font-normal text-zinc-100">Atelier</strong> は、編物を単なる手芸の枠にとどめず、構造工学と美意識の交差点として捉え、その探求の軌跡を静かに留めておくための個人的なアーカイブです。
+      </p>
+      <p>
+        完成した作品の佇まいだけでなく、そこに至るまでの無数のスワッチ（試作）、ゲージの微調整、引き返し編みの幾何学的なアプローチなど、普段は表に出ない思考のプロセスそのものを記録しています。
+      </p>
+    </section>
 
-      <!-- バックグラウンド・思想 -->
-      <section class="space-y-4 pt-8 border-t border-zinc-900">
-        <h2 class="text-lg font-normal tracking-wide text-zinc-100">Atelier について</h2>
-        <p>
-          ここは、完成した作品を並べるギャラリーであり、試行錯誤のプロセスを記すワークスペースであり、構造的な考察を深める技術の記録庫です。
-        </p>
-        <p>
-          流行のスタイルにとらわれず、素材と構造が持つ本質的な美しさを紐解きながら、一針一針の積み重ねを大切にしています。ふらっと立ち寄った方が、編みの世界に流れるロジックや深みにそっと触れていけるような場所を目指しています。
-        </p>
-      </section>
+    {/* 2. アーカイブの3つの柱（サイトの構造説明） */}
+    <section class="mb-20 pt-12 border-t border-zinc-800/60">
+      <h2 class="text-xs font-mono tracking-widest text-zinc-400 uppercase mb-8">
+        Structure of This Archive
+      </h2>
 
-      <!-- プロフィール概要 -->
-      <section class="space-y-4 pt-8 border-t border-zinc-900">
-        <h2 class="text-lg font-normal tracking-wide text-zinc-100">Profile</h2>
-        <ul class="space-y-2 text-xs text-zinc-400">
-          <li class="flex flex-col sm:flex-row gap-2 sm:gap-6">
-            <span class="w-24 text-zinc-500">背景</span>
-            <span class="text-zinc-300">専門学校にて編物全般を専門的に研究</span>
-          </li>
-          <li class="flex flex-col sm:flex-row gap-2 sm:gap-6">
-            <span class="w-24 text-zinc-500">関心領域</span>
-            <span class="text-zinc-300">編地組織、立体構造設計、手仕事のプロセス記録</span>
-          </li>
-        </ul>
-      </section>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-zinc-950/60 border border-zinc-800/80 rounded-md p-6">
+          <span class="text-[10px] text-rose-300/80 font-mono block mb-2">01 / GALLERY</span>
+          <h3 class="text-sm font-medium text-zinc-100 mb-3">完成作品の記録</h3>
+          <p class="text-xs text-zinc-400 font-light leading-relaxed">
+            糸の質感や陰影、シルエットが最も美しく立ち現れる瞬間を切り取った視覚的アーカイブです。
+          </p>
+        </div>
+
+        <div class="bg-zinc-950/60 border border-zinc-800/80 rounded-md p-6">
+          <span class="text-[10px] text-rose-300/80 font-mono block mb-2">02 / WORKS & PROCESS</span>
+          <h3 class="text-sm font-medium text-zinc-100 mb-3">試作と実験のログ</h3>
+          <p class="text-xs text-zinc-400 font-light leading-relaxed">
+            使用糸のスペックやゲージの数値、編み地の挙動を確かめるための途中経過を留めています。
+          </p>
+        </div>
+
+        <div class="bg-zinc-950/60 border border-zinc-800/80 rounded-md p-6">
+          <span class="text-[10px] text-rose-300/80 font-mono block mb-2">03 / TECHNICAL ARTICLES</span>
+          <h3 class="text-sm font-medium text-zinc-100 mb-3">構造と理論の考察</h3>
+          <p class="text-xs text-zinc-400 font-light leading-relaxed">
+            編み目のテンション解析やパターン設計のロジックなど、技術的な気づきを言語化したノートです。
+          </p>
+        </div>
+      </div>
+    </section>
+
+    {/* 3. 環境・道具立てについての小さなノート（任意） */}
+    <section class="mb-20 pt-12 border-t border-zinc-800/60">
+      <h2 class="text-xs font-mono tracking-widest text-zinc-400 uppercase mb-6">
+        Notes on Craft
+      </h2>
+      <div class="bg-zinc-900/40 border border-zinc-800/60 rounded-md p-6 text-xs text-zinc-400 font-light space-y-2 font-mono">
+        <p><span class="text-zinc-500 inline-block w-28">Focus:</span> Structural Knitting, Yarn Tension, Swatching</p>
+        <p><span class="text-zinc-500 inline-block w-28">Materials:</span> Natural Fibers (Wool, Linen, Silk, Cotton)</p>
+        <p><span class="text-zinc-500 inline-block w-28">Built with:</span> Astro & Tailwind CSS</p>
+      </div>
+    </section>
+
+    {/* トップへ戻るナビゲーション */}
+    <div class="pt-8 border-t border-zinc-800/60 flex justify-between items-center text-xs">
+      <a href="/" class="text-zinc-400 hover:text-white transition-colors">
+        ← Atelier トップへ戻る
+      </a>
     </div>
+
   </main>
 </BaseLayout>

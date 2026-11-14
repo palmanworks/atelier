@@ -3,57 +3,66 @@ interface Props {
   title?: string;
 }
 
-const { title = "YarnDiary — 編物研究・制作記録" } = Astro.props;
+const { title = "Atelier" } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="ja" class="scroll-smooth">
+<html lang="ja" class="bg-zinc-950 text-zinc-100 antialiased">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
   </head>
-  <body class="bg-zinc-950 text-zinc-100 min-h-screen flex flex-col font-sans selection:bg-rose-500/30 selection:text-white">
-
-    <!-- 上部固定ヘッダー -->
-    <header class="sticky top-0 z-50 backdrop-blur-md bg-zinc-950/80 border-b border-zinc-800/60">
+  <body class="min-h-screen flex flex-col font-sans selection:bg-zinc-800 selection:text-zinc-100">
+    
+    {/* ヘッダー（固定表示 ＋ 背景半透明のガラスモーフィズム風） */}
+    <header class="fixed top-0 left-0 w-full z-50 bg-zinc-950/80 backdrop-blur-md border-b border-zinc-800/60">
       <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-        <a href="/" class="text-lg font-light tracking-widest hover:text-rose-300 transition-colors">
-          YarnDiary
+        <a href="/" class="text-sm font-light tracking-widest hover:text-zinc-300 transition-colors">
+          Atelier
         </a>
-        <nav class="flex items-center gap-6 text-sm font-medium text-zinc-400">
-          <a href="/#gallery" class="hover:text-zinc-100 transition-colors">Gallery</a>
-          <a href="/#works" class="hover:text-zinc-100 transition-colors">Works</a>
-          <a href="/#articles" class="hover:text-zinc-100 transition-colors">Articles</a>
-          <a href="/about" class="hover:text-zinc-100 transition-colors">About</a>
+        <nav class="flex items-center space-x-6 text-xs font-light tracking-wider">
+          <a href="/#gallery" class="text-zinc-400 hover:text-white transition-colors">Gallery</a>
+          <a href="/#works" class="text-zinc-400 hover:text-white transition-colors">Works</a>
+          <a href="/articles" class="text-zinc-400 hover:text-white transition-colors">Articles</a>
+          <a href="/about" class="text-zinc-400 hover:text-white transition-colors">About</a>
         </nav>
       </div>
     </header>
 
-    <!-- メインコンテンツ -->
-    <main class="flex-grow">
+    {/* メインコンテンツ（ヘッダーの高さ分だけ上部にパディングを確保） */}
+    <main class="flex-grow pt-16">
       <slot />
     </main>
 
-    <!-- フッター -->
-    <footer class="border-t border-zinc-800/60 bg-zinc-950 py-16 px-6 mt-20">
-      <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-end gap-8">
-        <div>
-          <p class="font-light text-lg tracking-wider mb-2">Atelier</p>
-          <p class="text-xs text-zinc-400 max-w-md leading-relaxed">
-            編物研究・制作記録。かつて専門学校で編物全般を研究していました。糸の構造と手仕事の重なりを記しています。
-          </p>
-        </div>
-
-        <div class="flex flex-col items-start md:items-end gap-4">
-          <div class="flex items-center gap-6 text-xs text-zinc-400">
-            <a href="/about" class="hover:text-zinc-100 transition-colors">About</a>
-            <a href="/policy" class="hover:text-zinc-100 transition-colors">Site Policy</a>
-            <!-- 必要であればSNSやContactリンクをここに追加 -->
+    {/* フッター */}
+    <footer class="border-t border-zinc-800/60 bg-zinc-950 py-12 px-6">
+      <div class="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center text-xs text-zinc-500 font-light space-y-4 sm:space-y-0">
+        <p>&copy; {new Date().getFullYear()} Atelier. All rights reserved.</p>
+        
+        {/* ナビゲーションとSNSアイコン */}
+        <div class="flex items-center space-x-6">
+          <div class="flex space-x-6">
+            <a href="/" class="hover:text-zinc-300 transition-colors">Home</a>
+            <a href="/about" class="hover:text-zinc-300 transition-colors">About</a>
+            <a href="/articles" class="hover:text-zinc-300 transition-colors">Articles</a>
           </div>
-          <p class="text-[11px] text-zinc-600 tracking-wider">
-            &copy; {new Date().getFullYear()} Atelier. All rights reserved.
-          </p>
+
+          {/* 上品な縦の区切り線 */}
+          <div class="h-3 w-px bg-zinc-800"></div>
+
+          {/* GitHubアイコンリンク */}
+          <a 
+            href="https://github.com/your-username/atelier" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            class="text-zinc-400 hover:text-white transition-colors"
+            aria-label="GitHub"
+          >
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
+            </svg>
+          </a>
         </div>
       </div>
     </footer>
