@@ -1,6 +1,6 @@
 ---
 title: "引き返し編みの立体ベスト"
-image: "/images/gallery/piece-01.jpg"
+image: "../../assets/gallery/piece-01.jpg"
 date: 2026-11-01
 order: 1
 ---
